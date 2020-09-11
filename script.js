@@ -228,7 +228,6 @@
       
       this.pronto();
 
-      //Determina se o processo será I/O Bound
       this.IOBound = this.entraEmEspera();
 
     }
@@ -317,40 +316,30 @@
 
   Escalonador = {
 
-    // Parâmetros do Escalonador.
-    // O tempo é expresso em milisegundos
+    // parâmetros do Escalonador.
+    // o tempo em ms
 
-    //Quantidade de tempo que o escalonador leva para trocar o processo
     quantum: null,
 
-    //Quantidade processos encerrados no minuto
     throughput: 0,
 
-    //Quantidade de processos já criados
     qtdeTotalProcessos: 0,
 
-    //Quantidade de processos já encerrados
     qtdeTotalEncerrados: 0,
 
-    //Tempo de vida default do processo: 30 segundos
     tempoDeVida: 30000,
 
-    //Quantidade máxima de processos que são instanciados no minuto
     quantidadePorMinuto: null,
 
-    //Chance do processo entrar em espera
     chanceDeEspera: null,
-
-    //Flag que determina se processos encerrados saem da visualização
+    
     mostraEncerramento: false,
-
-    //Clock do minuto do escalonador
+    
     timerMinuto: null,
-
-    //Clock do segundo do escalonador
+    
     timerSegundo: null,
 
-    //Timer do quantum, troca de processos
+    
     timerExecucao: null,
 
     proxPid: null,
@@ -363,7 +352,6 @@
 
     ultimoIndice: 0,
 
-    //Debug espera
     contadorIOBound: 0,
 
     qtdeEmEspera: 0,
@@ -372,18 +360,18 @@
 
     debug: false,
 
-    //Ativa o modo debug
+    //ativa o modo debug(n implementei o button no html)
     verbose: function() {
       this.debug = !this.debug;
       return this.debug;
     },
 
-    //Gera código randômico hexadecimal de 4 dígitos
+    //código random em hexadecimal de 4 dígitos
     R4: function() {
       return ((1 + Math.random())*100000 | 0).toString(16).substring(1);
     },
 
-    //Junta os códigos randômicos para gerar um id único
+    //cod random em id unico
     geraPID: function() {
       var pid = "" + this.R4() + this.R4();
       pid += "-";
@@ -401,7 +389,7 @@
       this.ciclosDeEspera = opcoes.ciclosDeEspera;
       this.mostraEncerramento = opcoes.mostraEncerramento;
 
-      //Zerando escalonador
+      //zerando escalonador
       this.processos = {};
       this.proxPid = null;
       this.processoEmFoco = null;
@@ -424,7 +412,7 @@
       this.processosNoMinuto = 0;
       this.geraLoteDeProcessos();
 
-      //Loop contínuo a cada 60 segundos + 1 que move o Escalonador
+     
       this.timerMinuto = window.setInterval(function(){
         this.processosNoMinuto = 0;
         this.geraLoteDeProcessos();
@@ -435,7 +423,7 @@
 
     geraLoteDeProcessos: function() {
       var qtde = Math.ceil(this.quantidadePorMinuto/60);
-      //Notifica estatística de taxa de criação ao Simulador
+      
       Simulador.taxaCriacao(qtde);
       if(this.processosNoMinuto >= this.quantidadePorMinuto) {
         Simulador.throughput(this.throughput);
@@ -485,7 +473,7 @@
         }
       }
 
-      //Parando execução do processo atual se existente e fora da espera
+      
       if(this.processoEmFoco !== null) {
         if(this.processoEmFoco.getEstado() !== Estado.EM_ESPERA)
           this.processoEmFoco.pronto();
@@ -493,7 +481,7 @@
 
       processo = this.getProcesso(this.proxPid);
 
-      //Executa o próximo processo se ele existir
+      
       if (processo) {
         processo.executar();
         this.processoEmFoco = processo;
@@ -515,7 +503,7 @@
         ciclosDeEspera: this.ciclosDeEspera
       });
       this.processos[pid] = novoProcesso;
-      //Reporta alteração no número de processos ao Simulador
+     
       Simulador.processos(this.qtdeTotalProcessos, this.qtdeTotalEncerrados);
       this.qtdeTotalProcessos++;
       if(this.debug) {
@@ -562,10 +550,4 @@
     return false;
   }.bind(this), false);
 
-  //Liga o debug se a caixa estiver marcada
-  debug = document.querySelector("#debug");
-  debug.addEventListener("change", function(e){
-    e.preventDefault();
-    Escalonador.verbose();
-  }, false);
 })(window, document);
