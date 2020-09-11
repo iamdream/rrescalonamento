@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simulador Escalonador de Processos</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/estilo.css">
+  </head>
+  <body>
+    <header>
+      <h1 class="oi">Simulador de Escalonamento de Processos<br>(usando RR)</h1>
+    </header>
+    <div id="main">
+
+      <form id="controles" action="">
+        <h1>Controles</h1>
+        <fieldset>
+          <label for="quantum">Quantum(ms):</label>
+          <input id="quantum" type="number" required>
+        </fieldset>
+        <fieldset>
+          <label for="quantidadePorMinuto">Quantidade/minuto:</label>
+          <input id="quantidadePorMinuto" type="number" required>
+        </fieldset>
+        <fieldset>
+          <label for="tempoDeVida">Tempo de Vida (ciclos):</label>
+          <input id="tempoDeVida" type="number" required>
+        </fieldset>
+        <fieldset>
+          <label for="chanceDeEspera">Chance de processo I/O Bound (%):</label>
+          <input id="chanceDeEspera" type="number" required>
+        </fieldset>
+        <fieldset>
+          <label for="ciclosDeEspera">Tempo de espera (ciclos):</label>
+          <input id="ciclosDeEspera" type="number" required>
+        </fieldset>
+        <fieldset>
+          <input id="mostraEncerrado" type="checkbox">
+          <label for="mostraEncerrado">Exibir todos os processos encerrados</label>
+        </fieldset>
+        <fieldset>
+        </fieldset>
+        <input type="submit" id="btiniciar" value="Iniciar Simulação">
+      </form>
+      <h1 class="com-simulacao">Rodando simulação...</h1>
+      <h1>Estatísticas</h1>
+      <table id="estatisticas">
+        <tr>
+          <td>Throughput (calculado no fim do minuto):</td>
+          <td><span class="estatistica" id="throughput">0</span> por minuto</td>
+        </tr>
+        <tr>
+          <td>Taxa de criação de processos:</td>
+          <td><span class="estatistica" id="tx-criacao">0</span> por segundo</td>
+        </tr>
+        <tr>
+          <td>Número de processos já criados:</td>
+          <td><span class="estatistica" id="n-criados">0</span></td>
+        </tr>
+        <tr>
+          <td>Número de processos em espera:</td>
+          <td><span class="estatistica" id="n-espera">0</span></td>
+        </tr>
+        <tr>
+          <td>Número de processos encerrados:</td>
+          <td><span class="estatistica" id="n-encerrados">0</span></td>
+        </tr>
+        <tr>
+          <td>Número de processos ativos:</td>
+          <td><span class="estatistica" id="n-ativos">0</span></td>
+        </tr>
+        <tr>
+          <td>Número total de processos I/O bound já criados:</td>
+          <td><span class="estatistica" id="io-bound">0</span></td>
+        </tr>
+      </table>
+      <h1>Tabela de processos</h1>
+      <h1 class="sem-simulacao">Nenhuma simulação rodando agora</h1>
+      <table id="tabela-processos"></table>
+    </div>
+    <footer>
+      <p>JR, DAVID, MATEUS - Sistemas Operacionais - IFCE Campus Cedro</p>
+ 
+    <script src="src/escalonador.js"></script>
+  </body>
+</html>
